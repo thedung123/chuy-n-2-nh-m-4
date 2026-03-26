@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+
+  final List members = [
+    {
+      "name": "Nguyễn Thế Dũng",
+      "image": "https://i.postimg.cc/4dP6pJGr/dung.jpg",
+    },
+    {
+      "name": "Trần Tùng Dương",
+      "image": "https://i.postimg.cc/J41pS7R3/duongdz.jpg",
+    },
+    {
+      "name": "Lê Văn Sáng",
+      "image": "https://i.postimg.cc/MZ1tp8gt/sang.jpg",
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Giới thiệu nhóm 14"),
+          centerTitle: true,
+        ),
+
+        body: Column(
+          children: [
+
+            SizedBox(height: 15),
+
+            Text(
+              "Xin chào mọi người 👋\nĐây là thành viên nhóm 14",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: members.length,
+                itemBuilder: (context, index) {
+
+                  return Card(
+                    margin: EdgeInsets.all(10),
+
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundImage:
+                        NetworkImage(members[index]["image"]),
+                      ),
+
+                      title: Text(
+                        members[index]["name"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
+}
