@@ -1,0 +1,159 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepPurple),
+      home: const ProfilePage(),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Hồ Sơ Cá Nhân'),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple[50],
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+            child: Column(
+              children: [
+                // Hình ảnh minh họa - Đã sửa lỗi ở đây
+                CircleAvatar(
+                  radius: 75,
+                  backgroundColor: Colors.deepPurple,
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: NetworkImage(
+                      'https://i.postimg.cc/J41pS7R3/duongdz.jpg', // Thêm dấu nháy đơn bao quanh link
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                // Thông tin cá nhân chính
+                const Text(
+                  'TRẦN TÙNG DƯƠNG',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Sinh viên lớp DCCNTT 13.10.22',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.deepPurple[700],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  'Thành viên Nhóm 14',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Divider(),
+                ),
+
+                // Thông tin chi tiết
+                _buildInfoRow(Icons.cake, 'Ngày sinh', '26-09-2004'),
+                _buildInfoRow(
+                  Icons.school,
+                  'Chuyên ngành',
+                  'Công nghệ thông tin',
+                ),
+                _buildInfoRow(
+                  Icons.group,
+                  'Đội ngũ',
+                  'Nhóm 14 - Dự án thực hành',
+                ),
+
+                const SizedBox(height: 30),
+
+                // Phần giới thiệu bản thân
+                _buildSectionTitle('Giới Thiệu Bản Thân'),
+                const Text(
+                  'Mình là một sinh viên CNTT luôn mang trong mình niềm đam mê khám phá những công nghệ mới. '
+                  'Với tinh thần làm việc nhóm trách nhiệm và sự tỉ mỉ trong học tập, mình luôn nỗ lực đóng góp '
+                  'hết mình cho các dự án chung của Nhóm 14. Phương châm của mình là: Học hỏi không ngừng để '
+                  'xây dựng nền tảng vững chắc cho sự nghiệp lập trình trong tương lai.',
+                  style: TextStyle(fontSize: 16, height: 1.6),
+                  textAlign: TextAlign.justify,
+                ),
+
+                const SizedBox(height: 40),
+
+                // Nút tương tác
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text('Kết nối với mình'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.deepPurple, size: 24),
+          const SizedBox(width: 15),
+          Text(
+            '$label: ',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text(value, style: const TextStyle(fontSize: 16)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 15),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          color: Colors.deepPurple,
+        ),
+      ),
+    );
+  }
+}
