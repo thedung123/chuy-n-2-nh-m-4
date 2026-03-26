@@ -1,0 +1,201 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: InterestScreen(),
+    );
+  }
+}
+
+class InterestScreen extends StatefulWidget {
+  @override
+  _InterestScreenState createState() => _InterestScreenState();
+}
+
+class _InterestScreenState extends State<InterestScreen> {
+
+  TextEditingController moneyController = TextEditingController();
+  TextEditingController rateController = TextEditingController();
+
+  String result = "";
+
+  void calculateYears() {
+
+    double rate = double.tryParse(rateController.text) ?? 0;
+
+    if (rate <= 0) {
+      setState(() {
+        result = "⚠️ Vui lòng nhập lãi suất hợp lệ";
+      });
+      return;
+    }
+
+    double r = rate / 100;
+
+    double years = log(2) / log(1 + r);
+
+    setState(() {
+      result = "📈 Số năm để tiền tăng gấp đôi: ${years.toStringAsFixed(2)} năm";
+    });
+  }
+
+  Widget inputField(String label, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+
+        SizedBox(height: 6),
+
+        TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey.shade100,
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 12
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+
+        SizedBox(height: 18)
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+
+      appBar: AppBar(
+
+        backgroundColor: Colors.white,
+        elevation: 1,
+
+        leading: Icon(Icons.menu, color: Colors.black),
+
+        title: Text(
+          "Máy tính lãi suất",
+          style: TextStyle(color: Colors.black),
+        ),
+
+        actions: [
+          Icon(Icons.more_vert, color: Colors.black)
+        ],
+      ),
+
+      backgroundColor: Colors.grey.shade200,
+
+      body: Center(
+
+        child: Container(
+
+          width: 350,
+
+          padding: EdgeInsets.all(20),
+
+          decoration: BoxDecoration(
+
+            color: Colors.white,
+
+            borderRadius: BorderRadius.circular(20),
+
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 12,
+                offset: Offset(0, 6),
+              )
+            ],
+          ),
+
+          child: Column(
+
+            mainAxisSize: MainAxisSize.min,
+
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+
+              inputField("Số tiền", moneyController),
+
+              inputField("Lãi hàng năm (%)", rateController),
+
+              Align(
+
+                alignment: Alignment.centerRight,
+
+                child: ElevatedButton(
+
+                  style: ElevatedButton.styleFrom(
+
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12
+                    ),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+
+                  onPressed: calculateYears,
+
+                  child: Text("Tính toán"),
+                ),
+              ),
+
+              SizedBox(height: 20),
+
+              if (result.isNotEmpty)
+
+                Container(
+
+                  padding: EdgeInsets.all(14),
+
+                  decoration: BoxDecoration(
+
+                    color: Colors.blue.shade50,
+
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  child: Text(
+
+                    result,
+
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
