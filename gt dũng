@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Giới thiệu bản thân"),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Ảnh đại diện (thay link ảnh của bạn vào đây)
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: NetworkImage(
+                  "https://i.postimg.cc/4dP6pJGr/dung.jpg",
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                "Nguyễn Thế Dũng",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+
+              const Text(
+                "22 tuổi",
+                style: TextStyle(fontSize: 18),
+              ),
+
+              const Text(
+                "Ngành: Công nghệ thông tin",
+                style: TextStyle(fontSize: 18),
+              ),
+
+              const Text(
+                "Sở thích: Chơi game và xem phim",
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
