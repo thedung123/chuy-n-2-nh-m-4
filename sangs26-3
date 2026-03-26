@@ -1,0 +1,251 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const UltimateCalculatorApp());
+}
+
+class UltimateCalculatorApp extends StatelessWidget {
+  const UltimateCalculatorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark, // Kích hoạt chế độ tối
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF6366F1), // Indigo hiện đại
+          secondary: Color(0xFF1E293B), // Slate tối
+          surface: Color(0xFF0F172A), // Màu nền Navy đậm
+          onPrimary: Colors.white,
+          onSurface: Colors.white,
+        ),
+        fontFamily: 'Montserrat', // Phông chữ Montserrat thanh lịch (DartPad hỗ trợ sẵn)
+      ),
+      home: const CalculatorPage(),
+    );
+  }
+}
+
+class CalculatorPage extends StatefulWidget {
+  const CalculatorPage({super.key});
+
+  @override
+  State<CalculatorPage> createState() => _CalculatorPageState();
+}
+
+class _CalculatorPageState extends State<CalculatorPage> {
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _rateController = TextEditingController();
+  String _yearsToDouble = "0";
+
+  void _calculate() {
+    double? rate = double.tryParse(_rateController.text);
+    setState(() {
+      if (rate != null && rate > 0) {
+        double result = 72 / rate;
+        _yearsToDouble = result.toStringAsFixed(1);
+      } else {
+        _yearsToDouble = "0";
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
+
+    return Scaffold(
+      backgroundColor: theme.surface,
+      appBar: AppBar(
+        title: const Text('INVESTMENT HUB',
+          style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 18, letterSpacing: 2.0)),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Hình ảnh minh họa tài chính (Sử dụng Icon lớn & màu sắc để thay thế)
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: theme.primary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.show_chart_rounded, size: 80, color: theme.primary),
+                ),
+              ),
+              const SizedBox(height: 30),
+              
+              // 2. Tiêu đề & Mô tả
+              const Text(
+                "Tính Toán Lợi Nhuận",
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Xác định thời gian để nhân đôi tài khoản của bạn.",
+                style: TextStyle(color: Colors.white70.withOpacity(0.7), fontSize: 14),
+              ),
+              const SizedBox(height: 30),
+              
+              // 3. Card Nhập liệu (Phong cách Neumorphism nhẹ)
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: theme.secondary,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    _buildInputField(
+                      controller: _amountController,
+                      label: "SỐ TIỀN ĐẦU TƯ BAN ĐẦU",
+                      hint: "Ví dụ: 50.000.000",
+                      icon: Icons.account_balance_wallet_rounded,
+                      suffix: "VNĐ",
+                    ),
+                    const SizedBox(height: 25),
+                    _buildInputField(
+                      controller: _rateController,
+                      label: "LÃI SUẤT KÌ VỌNG (%/NĂM)",
+                      hint: "Ví dụ: 9.5",
+                      icon: Icons.auto_graph_rounded,
+                      suffix: "%",
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 35),
+              
+              // 4. Card Hiển thị kết quả (Kính mờ - Glassmorphism)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 24),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [theme.primary, theme.primary.withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.primary.withOpacity(0.25),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    )
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      "THỜI GIAN ĐỂ GẤP ĐÔI TÀI SẢN",
+                      style: TextStyle(color: Colors.white, fontSize: 13, letterSpacing: 1.5, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          _yearsToDouble,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold,
+                            height: 1.0, // Chữ khít hơn để sang hơn
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          "NĂM",
+                          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 40),
+              
+              // 5. Nút tính toán phong cách Premium
+              SizedBox(
+                width: double.infinity,
+                height: 65,
+                child: FilledButton.icon(
+                  onPressed: _calculate,
+                  icon: const Icon(Icons.calculate, size: 24),
+                  label: const Text(
+                    "XEM KẾT QUẢ NGAY",
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, letterSpacing: 1.0),
+                  ),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: theme.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    elevation: 10,
+                    shadowColor: theme.primary.withOpacity(0.4),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget con để tối ưu code input
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    String? suffix,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white54, fontSize: 11, letterSpacing: 1.2)),
+        const SizedBox(height: 10),
+        TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFF0F172A), // Màu nền tối hơn cho input
+            hintText: hint,
+            hintStyle: const TextStyle(fontWeight: FontWeight.normal, color: Colors.grey, fontSize: 14),
+            prefixIcon: Icon(icon, color: const Color(0xFF6366F1), size: 20),
+            suffixText: suffix,
+            suffixStyle: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF6366F1)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+          ),
+        ),
+      ],
+    );
+  }
+}
