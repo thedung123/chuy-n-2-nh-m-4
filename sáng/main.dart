@@ -39,16 +39,28 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              // 🖼️ Avatar
+              // 🖼️ Avatar (ảnh từ Postimg)
               CircleAvatar(
                 radius: 70,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.grey[200],
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/sang.jpg',
+                  child: Image.network(
+                    'https://i.postimg.cc/MZ1tp8gt/sang.jpg',
                     width: 130,
                     height: 130,
                     fit: BoxFit.cover,
+
+                    // ⏳ loading
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+
+                    // ❌ lỗi ảnh
                     errorBuilder: (context, error, stackTrace) {
                       return const Icon(
                         Icons.person,
@@ -95,7 +107,7 @@ class MyHomePage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'Tôi đam mê lập trình và đang học phát triển ứng dụng mobile bằng Flutter. '
-                      'Mục tiêu của tôi là trở thành lập trình viên chuyên nghiệp.',
+                  'Mục tiêu của tôi là trở thành lập trình viên chuyên nghiệp.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),
